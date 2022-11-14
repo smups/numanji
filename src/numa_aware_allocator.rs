@@ -4,7 +4,7 @@ macro_rules! numa_aware_allocator {
         // General imports
         use allocator_suite::adaptors::prelude::*;
         use core::ptr::NonNull;
-        use std::alloc::{System, GlobalAlloc, Layout, AllocError};
+        use std::alloc::{System, GlobalAlloc, Layout};
         use allocator_suite::memory_sources::mmap::memory_map_source::MemoryMapSource;
         use allocator_suite::extensions::usize_ext::UsizeExt;
         use allocator_suite::allocators::allocator::Allocator;
