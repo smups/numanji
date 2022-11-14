@@ -4,7 +4,7 @@ macro_rules! numa_aware_allocator {
         // General imports
         use allocator_suite::adaptors::prelude::*;
         use core::ptr::NonNull;
-        use std::alloc::{System, GlobalAlloc, AllocRef, Layout, AllocErr};
+        use std::alloc::{System, GlobalAlloc, Layout, AllocError};
         use allocator_suite::memory_sources::mmap::memory_map_source::MemoryMapSource;
         use allocator_suite::extensions::usize_ext::UsizeExt;
         use allocator_suite::allocators::allocator::Allocator;
@@ -74,22 +74,6 @@ macro_rules! numa_aware_allocator {
             unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usize) -> *mut u8
             {
                 allocator_instance().global_alloc_realloc(ptr, layout, new_size)
-            }
-        }
-
-        unsafe impl AllocRef for NumaAllocator {
-            #[inline(always)]
-            fn alloc(&mut self, layout: Layout) -> Result<NonNull<[u8]>, AllocErr>
-            {
-                let size = layout.size();
-                let ptr = unsafe { allocator_instance().alloc_alloc_zeroed(layout) }?;
-                Ok(NonNull::slice_from_raw_parts(ptr, size))
-            }
-
-            #[inline(always)]
-            unsafe fn dealloc(&mut self, ptr: MemoryAddress, layout: Layout)
-            {
-                allocator_instance().alloc_dealloc(ptr, layout)
             }
         }
   }
